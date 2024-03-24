@@ -1,5 +1,6 @@
 package com.invest.investpg.src.login.controller;
 
+import com.invest.investpg.src.infra.security.TokenService;
 import com.invest.investpg.src.login.controller.request.LoginRequest;
 import com.invest.investpg.src.login.controller.response.LoginResponse;
 import com.invest.investpg.src.login.dto.RegisterDto;
@@ -9,6 +10,7 @@ import com.invest.investpg.src.login.service.LoginService;
 import com.invest.investpg.src.login.service.mapper.LoginMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +20,13 @@ import java.util.List;
 @RequestMapping("/login")
 public class LoginController {
 
-    @Autowired
+    @Autowired(required = false)
     private LoginService loginService;
 
     @PostMapping("/")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<TokenDto> loginUser(@RequestBody LoginRequest loginRequest, TokenDto tokenDto) {
-        TokenDto auth = loginService.login(LoginMapper.requestToDtoLogin(loginRequest), tokenDto);
+    public ResponseEntity<TokenDto> loginUser(@RequestBody LoginRequest loginRequest, TokenService tokenService, AuthenticationManager authenticationManager, TokenDto tokenDto) {
+        TokenDto auth = loginService.login(LoginMapper.requestToDtoLogin(loginRequest), tokenService, authenticationManager, tokenDto);
         return ResponseEntity.ok(auth);
     }
 

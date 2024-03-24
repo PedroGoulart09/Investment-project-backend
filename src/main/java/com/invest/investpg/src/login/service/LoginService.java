@@ -23,16 +23,10 @@ import java.util.List;
 @Service
 public class LoginService implements UserDetailsService {
 
-    @Autowired
+    @Autowired(required = false)
     private LoginRepository loginRepository;
 
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    public TokenDto login(LoginDto loginDto, TokenDto tokenDto) {
+    public TokenDto login(LoginDto loginDto, TokenService tokenService, AuthenticationManager authenticationManager, TokenDto tokenDto) {
         try {
             UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(loginDto.getLogin(), loginDto.getPassword());
             Authentication auth = authenticationManager.authenticate(usernamePassword);
@@ -43,7 +37,6 @@ public class LoginService implements UserDetailsService {
             throw new ResourceNotFoundException(loginDto.getLogin());
         }
     }
-
 
     public LoginEntity register(RegisterDto registerDto) {
         try {
@@ -58,12 +51,12 @@ public class LoginService implements UserDetailsService {
         }
     }
 
-    public List<LoginEntity> getAllUsers(){
+    public List<LoginEntity> getAllUsers() {
         return loginRepository.findAll();
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public LoginEntity loadUserByUsername(String username) throws UsernameNotFoundException {
         return loginRepository.findByLogin(username);
     }
 }
