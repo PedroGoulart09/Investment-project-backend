@@ -7,8 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-@ComponentScan({"main.login.controller", "main.login.repository"})
-@EnableJpaRepositories("main.login.repository")
+
 @SpringBootApplication
 public class InvestPgApplication {
 
